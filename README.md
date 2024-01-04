@@ -5,7 +5,7 @@ https://mariadb.com/kb/en/setting-up-replication/
 ### Avoir installer docker et docker compose
 
 
-## 1 / Lancer les 3 conatiners avec le docker-compose.yml
+## 1 / Lancer les 3 CONTAINER avec le docker-compose.yml
 
 - Se rendre dans le dossier ou il y a le docker compose (cd tuto_Master_Slave)
 
@@ -14,7 +14,7 @@ docker compose up
 ```
 (si votre docker-compose.yml porte un autre nom : docker compose -f name.yml up )
 
-- Vérifier la bonne création des 3 containers
+- Vérifier la bonne création des 3 CONTAINER
 ``` 
 
 adminsys@adminsys-AERO-15-YB:~/Téléchargements/tutoMaserSlave-main$ docker ps
@@ -55,7 +55,7 @@ L'adresse IP du conteneur 'SQL-MASTER' est : 172.22.0.4
 
 
 
-- Se rendre sur le container SQL-MASTER 
+- Se rendre sur le CONTAINER SQL-MASTER 
 ```
 docker exec -it SQL-MASTER bash 
 ```
