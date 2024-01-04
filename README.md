@@ -152,17 +152,16 @@ je vérifie bien que :
 ## 4 / Résumé des commandes   
 
 ```
-yans@yans-IdeaPad-3-15IML05:~$ docker ps 
+adminsys@adminsys-AERO-15-YB:~/Téléchargements/tutoMaserSlave-main$ docker ps
 CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS          PORTS                                                                                  NAMES
-71ac447dd842   yanseg/worms   "/usr/local/bin/entr…"   21 seconds ago   Up 17 seconds   0.0.0.0:8081->80/tcp, :::8081->80/tcp, 0.0.0.0:19998->19999/tcp, :::19998->19999/tcp   WORDPRESS
-87cf7c948a50   mariadb        "docker-entrypoint.s…"   21 seconds ago   Up 18 seconds   3306/tcp                                                                               SQL-SLAVE01
-0fbac997549d   mariadb        "docker-entrypoint.s…"   21 seconds ago   Up 18 seconds   3306/tcp                                                                               SQL-MASTER
-yans@yans-IdeaPad-3-15IML05:~$ docker exec -it SGL-MASTER bash 
-Error response from daemon: No such container: SGL-MASTER
-yans@yans-IdeaPad-3-15IML05:~$ docker exec -it SQL-MASTER bash 
-root@0fbac997549d:/# docker exec -it SQL-MASTER bash 
-bash: docker: command not found
-root@0fbac997549d:/# mariadb -u root -psomewordpress
+eafbedcbfce9   yanseg/worms   "/usr/local/bin/entr…"   25 minutes ago   Up 15 seconds   0.0.0.0:8081->80/tcp, :::8081->80/tcp, 0.0.0.0:19998->19999/tcp, :::19998->19999/tcp   WORDPRESS
+f08b2c195e7a   mariadb        "docker-entrypoint.s…"   25 minutes ago   Up 14 seconds   3306/tcp                                                                               SQL-SLAVE01
+fb53d1cae983   mariadb        "docker-entrypoint.s…"   25 minutes ago   Up 14 seconds   3306/tcp                                                                               SQL-MASTER  
+
+$ docker exec -it SQL-MASTER bash 
+
+
+# mariadb -u root -psomewordpress
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 4
 Server version: 11.2.2-MariaDB-1:11.2.2+maria~ubu2204-log mariadb.org binary distribution
@@ -190,18 +189,7 @@ Query OK, 0 rows affected (0.000 sec)
 
 MariaDB [(none)]> exit;
 Bye
-root@0fbac997549d:/# exit 
-exit
-yans@yans-IdeaPad-3-15IML05:~$ docker ps 
-CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS          PORTS                                                                                  NAMES
-71ac447dd842   yanseg/worms   "/usr/local/bin/entr…"   29 minutes ago   Up 29 minutes   0.0.0.0:8081->80/tcp, :::8081->80/tcp, 0.0.0.0:19998->19999/tcp, :::19998->19999/tcp   WORDPRESS
-87cf7c948a50   mariadb        "docker-entrypoint.s…"   29 minutes ago   Up 29 minutes   3306/tcp                                                                               SQL-SLAVE01
-0fbac997549d   mariadb        "docker-entrypoint.s…"   29 minutes ago   Up 29 minutes   3306/tcp                                                                               SQL-MASTER
-yans@yans-IdeaPad-3-15IML05:~$ docker exec -it SQL-MASTER bash 
-root@0fbac997549d:/# exit 
-exit
-yans@yans-IdeaPad-3-15IML05:~$ docker exec -it SQL-SLAVE01 bash 
-root@87cf7c948a50:/# mariadb -u root -psomewordpress
+/# mariadb -u root -psomewordpress
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 4
 Server version: 11.2.2-MariaDB-1:11.2.2+maria~ubu2204-log mariadb.org binary distribution
@@ -211,7 +199,7 @@ Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 MariaDB [(none)]> CHANGE MASTER TO
-    ->   MASTER_HOST='172.21.0.3',
+    ->   MASTER_HOST='172.22.0.4',
     ->   MASTER_USER='replication_user',
     ->   MASTER_PASSWORD='bigs3cret',
     ->   MASTER_PORT=3306,
@@ -296,10 +284,10 @@ root@87cf7c948a50:/#
 ``` 
 ./ipContainer.sh WORDPRESS
 ```
-L'adresse IP du conteneur 'WORDPRESS' est : 172.21.0.4
+L'adresse IP du conteneur 'WORDPRESS' est : 172.22.0.4
 
 - Puis je me rend dans mon browser
-http://172.21.0.4/wp-admin/install.php
+http://172.22.0.4/wp-admin/install.php
 
 - J'install wordpress et je créé un post.
 
@@ -310,9 +298,9 @@ http://172.21.0.4/wp-admin/install.php
 En se reconnectant au conatiner SQL-SLAVE01 je vérifie qu'un post s'est ahouté dans la table dédiée. 
 
 ```
-yans@yans-IdeaPad-3-15IML05:~$ docker exec -it SQL-SLAVE01 bash 
+~$ docker exec -it SQL-SLAVE01 bash 
 
-root@87cf7c948a50:/# mariadb -u root -psomewordpress
+ mariadb -u root -psomewordpress
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 12
 Server version: 11.2.2-MariaDB-1:11.2.2+maria~ubu2204-log mariadb.org binary distribution
@@ -380,8 +368,8 @@ docker exec -it SQL-SLAVE01 bash
 ```
 - Je rend dans mariaDB et je vérifie bien que le nvx post que j'ai créé est dans la bdd du slave 
 ```
-yans@yans-IdeaPad-3-15IML05:~$ docker exec -it SQL-SLAVE01 bash 
-root@87cf7c948a50:/# mariadb -u root -psomewordpress
+ docker exec -it SQL-SLAVE01 bash 
+ mariadb -u root -psomewordpress
 Welcome to the MariaDB monitor.  Commands end with ; or \g.
 Your MariaDB connection id is 12
 Server version: 11.2.2-MariaDB-1:11.2.2+maria~ubu2204-log mariadb.org binary distribution
