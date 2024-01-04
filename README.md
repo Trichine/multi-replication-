@@ -421,4 +421,4 @@ MariaDB [wordpress]> select * from wp_posts;
 
 
 
-### docker compose down pour fermer tous les conatiners 
+### docker compose down pour fermer tous CONTAINER 
